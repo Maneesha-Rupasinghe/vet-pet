@@ -58,63 +58,100 @@ const VendorOrdersScreen = () => {
     };
 
     const renderOrderCard = (order: Order) => (
-        <View key={order.id} style={{
-            backgroundColor: '#fff',
-            borderRadius: 8,
-            padding: 15,
-            marginVertical: 10,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 3,
-        }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Order ID: {order.id}</Text>
-            <Text style={{ fontSize: 14, color: '#555', marginTop: 5 }}>
-                User ID: {order.userId}
-            </Text>
-            <Text style={{ fontSize: 14, fontWeight: 'bold', marginTop: 5 }}>Products:</Text>
-            {order.products.map((product, index) => (
-                <Text key={index} style={{ fontSize: 14, color: '#555' }}>
-                    {product.name} x{product.quantity} - ${(product.price * product.quantity).toFixed(2)}
+        <View
+            key={order.id}
+            style={{
+                backgroundColor: '#F9FAFB',
+                borderRadius: 16,
+                padding: 16,
+                marginVertical: 10,
+                marginHorizontal: 12,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.1,
+                shadowRadius: 6,
+                elevation: 4,
+            }}
+        >
+            {/* Header */}
+            <View style={{ marginBottom: 8 }}>
+                <Text style={{ fontSize: 18, fontWeight: '700', color: '#111827' }}>
+                    Order #{order.id}
                 </Text>
-            ))}
-            <Text style={{ fontSize: 14, fontWeight: 'bold', marginTop: 5 }}>
-                Total: ${order.total.toFixed(2)}
-            </Text>
-            <Text style={{ fontSize: 14, color: '#555', marginTop: 5 }}>
-                Status: {order.status}
-            </Text>
-            <Text style={{ fontSize: 14, color: '#555', marginTop: 5 }}>
-                Date: {new Date(order.createdAt.seconds * 1000).toLocaleString()}
+                <Text style={{ fontSize: 14, color: '#6B7280' }}>User: {order.userId}</Text>
+            </View>
+    
+            {/* Products List */}
+            <View style={{ marginTop: 12 }}>
+                <Text style={{ fontSize: 15, fontWeight: '600', color: '#374151', marginBottom: 4 }}>
+                    Products:
+                </Text>
+                {order.products.map((product, index) => (
+                    <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 2 }}>
+                        <Text style={{ fontSize: 14, color: '#4B5563' }}>
+                            {product.name} x{product.quantity}
+                        </Text>
+                        <Text style={{ fontSize: 14, color: '#4B5563' }}>
+                            ${(product.price * product.quantity).toFixed(2)}
+                        </Text>
+                    </View>
+                ))}
+            </View>
+    
+            {/* Total and Status */}
+            <View style={{ marginTop: 12 }}>
+                <Text style={{ fontSize: 15, fontWeight: '600', color: '#111827' }}>
+                    Total: ${order.total.toFixed(2)}
+                </Text>
+                <Text style={{ fontSize: 14, color: order.status === 'completed' ? '#10B981' : '#F59E0B', marginTop: 4 }}>
+                    Status: {order.status}
+                </Text>
+            </View>
+    
+            {/* Footer */}
+            <Text style={{ fontSize: 13, color: '#9CA3AF', marginTop: 10 }}>
+                Placed on: {new Date(order.createdAt.seconds * 1000).toLocaleString()}
             </Text>
         </View>
     );
+    
 
     return (
-        <View style={{ flex: 1, padding: 20 }}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>Orders</Text>
+        <View style={{ flex: 1, backgroundColor: '#FBF8EF' }}>
+                 <Text className="text-2xl font-extrabold text-[#3E4241] mb-5 ml-5">
+                   Order List
+                 </Text>
 
             {isLoading ? (
-                <Text>Loading...</Text>
+                <Text style={{ fontSize: 16, color: '#3E4241', marginHorizontal: 18 }}>
+                    Loading...
+                </Text>
             ) : orders.length === 0 ? (
-                <Text>No orders found</Text>
+                <Text style={{ fontSize: 14, color: '#6B7280', marginHorizontal: 18 }}>
+                    No orders found
+                </Text>
             ) : (
-                <ScrollView>
+                <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
                     {orders.map(order => renderOrderCard(order))}
                 </ScrollView>
             )}
 
-            <Snackbar
-                visible={snackbarVisible}
-                onDismiss={() => setSnackbarVisible(false)}
-                duration={Snackbar.DURATION_SHORT}
-                style={{
-                    backgroundColor: snackbarType === 'success' ? 'green' : 'red',
-                }}
-            >
-                {snackbarMessage}
-            </Snackbar>
+            <View className="absolute bottom-5 left-0 right-0">
+                <Snackbar
+                    visible={snackbarVisible}
+                    onDismiss={() => setSnackbarVisible(false)}
+                    duration={Snackbar.DURATION_SHORT}
+                    style={{
+                        backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+                        borderRadius: 8,
+                        padding: 10,
+                        marginHorizontal: 10,
+                        marginBottom: 10,
+                    }}
+                >
+                    <Text style={{ color: '#FFF', fontSize: 14 }}>{snackbarMessage}</Text>
+                </Snackbar>
+            </View>
         </View>
     );
 };

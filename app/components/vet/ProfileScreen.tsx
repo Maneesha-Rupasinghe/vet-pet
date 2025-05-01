@@ -32,7 +32,7 @@ const VetProfileScreen = () => {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackbarType] = useState<'success' | 'error'>('success');
-  
+
   const [newService, setNewService] = useState('');
   const [serviceFormMode, setServiceFormMode] = useState<'none' | 'add' | 'edit'>('none');
   const [editingServiceIndex, setEditingServiceIndex] = useState<number | null>(null);
@@ -114,7 +114,7 @@ const VetProfileScreen = () => {
           contactNo: vetData.contactNo,
           workingHours: vetData.workingHours,
           location: vetData.location,
-          services: vetData.services, // Ensure services are updated
+          services: vetData.services,
         });
         showSnackbar('Profile updated successfully!', 'success');
         setIsEditingProfile(false);
@@ -236,72 +236,128 @@ const VetProfileScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Vet Profile</Text>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#FBF8EF' }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView contentContainerStyle={{ padding: 10 }}>
+      <Text className="text-2xl font-extrabold text-[#3E4241] mb-5">
+                      User Profile
+                  </Text>
 
         {isLoading ? (
-          <Text>Loading...</Text>
+          <Text style={{ fontSize: 16, color: '#3E4241', marginHorizontal: 8 }}>
+            Loading...
+          </Text>
         ) : (
           <>
             {/* Name */}
-            <View style={{ marginTop: 20 }}>
-              <Text>Name:</Text>
+            <View style={{ marginTop: 15 }}>
+              <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+                Name:
+              </Text>
               {isEditingProfile ? (
                 <TextInput
                   value={vetData.name}
                   onChangeText={(text) => handleChange('name', text)}
                   placeholder="Enter your name"
-                  style={{ borderBottomWidth: 1, padding: 8 }}
+                  placeholderTextColor="#6B7280"
+                  style={{
+                    backgroundColor: '#F9FAFB',
+                    borderWidth: 1,
+                    borderColor: '#D1D5DB',
+                    borderRadius: 8,
+                    padding: 10,
+                    fontSize: 14,
+                    color: '#3E4241',
+                  }}
                 />
               ) : (
-                <Text>{vetData.name || 'No data'}</Text>
+                <Text style={{ fontSize: 14, color: '#6B7280' }}>
+                  {vetData.name || 'No data'}
+                </Text>
               )}
             </View>
 
             {/* Contact Number */}
-            <View style={{ marginTop: 20 }}>
-              <Text>Contact Number:</Text>
+            <View style={{ marginTop: 15 }}>
+              <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+                Contact Number:
+              </Text>
               {isEditingProfile ? (
                 <TextInput
                   value={vetData.contactNo}
                   onChangeText={(text) => handleChange('contactNo', text)}
                   placeholder="Enter contact number"
+                  placeholderTextColor="#6B7280"
                   keyboardType="phone-pad"
-                  style={{ borderBottomWidth: 1, padding: 8 }}
+                  style={{
+                    backgroundColor: '#F9FAFB',
+                    borderWidth: 1,
+                    borderColor: '#D1D5DB',
+                    borderRadius: 8,
+                    padding: 10,
+                    fontSize: 14,
+                    color: '#3E4241',
+                  }}
                 />
               ) : (
-                <Text>{vetData.contactNo || 'No data'}</Text>
+                <Text style={{ fontSize: 14, color: '#6B7280' }}>
+                  {vetData.contactNo || 'No data'}
+                </Text>
               )}
             </View>
 
             {/* Working Hours */}
-            <View style={{ marginTop: 20 }}>
-              <Text>Working Hours:</Text>
+            <View style={{ marginTop: 15 }}>
+              <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+                Working Hours:
+              </Text>
               {isEditingProfile ? (
                 <TextInput
                   value={vetData.workingHours}
                   onChangeText={(text) => handleChange('workingHours', text)}
                   placeholder="e.g., Mon-Fri 9AM-5PM"
-                  style={{ borderBottomWidth: 1, padding: 8 }}
+                  placeholderTextColor="#6B7280"
+                  style={{
+                    backgroundColor: '#F9FAFB',
+                    borderWidth: 1,
+                    borderColor: '#D1D5DB',
+                    borderRadius: 8,
+                    padding: 10,
+                    fontSize: 14,
+                    color: '#3E4241',
+                  }}
                 />
               ) : (
-                <Text>{vetData.workingHours || 'No data'}</Text>
+                <Text style={{ fontSize: 14, color: '#6B7280' }}>
+                  {vetData.workingHours || 'No data'}
+                </Text>
               )}
             </View>
 
             {/* Location */}
-            <View style={{ marginTop: 20 }}>
-              <Text>Location:</Text>
+            <View style={{ marginTop: 15 }}>
+              <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+                Location:
+              </Text>
               {isEditingProfile ? (
                 <TextInput
                   value={vetData.location}
                   onChangeText={(text) => handleChange('location', text)}
                   placeholder="Enter clinic location"
-                  style={{ borderBottomWidth: 1, padding: 8 }}
+                  placeholderTextColor="#6B7280"
+                  style={{
+                    backgroundColor: '#F9FAFB',
+                    borderWidth: 1,
+                    borderColor: '#D1D5DB',
+                    borderRadius: 8,
+                    padding: 10,
+                    fontSize: 14,
+                    color: '#3E4241',
+                  }}
                 />
               ) : (
-                <Text>{vetData.location || 'No data'}</Text>
+                <Text style={{ fontSize: 14, color: '#6B7280' }}>
+                  {vetData.location || 'No data'}
+                </Text>
               )}
             </View>
 
@@ -310,55 +366,89 @@ const VetProfileScreen = () => {
               onPress={isEditingProfile ? handleUpdateProfile : () => setIsEditingProfile(true)}
               style={{
                 marginTop: 20,
-                backgroundColor: isEditingProfile ? 'blue' : 'green',
-                padding: 10,
+                backgroundColor: '#3674B5',
+                borderRadius: 8,
+                padding: 12,
+                alignItems: 'center',
                 opacity: isSubmitting ? 0.5 : 1,
               }}
               disabled={isSubmitting}
             >
-              <Text style={{ color: 'white' }}>{isEditingProfile ? 'Update Profile' : 'Edit Profile'}</Text>
+              <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+                {isEditingProfile ? 'Update Profile' : 'Edit Profile'}
+              </Text>
             </TouchableOpacity>
 
             {isEditingProfile && (
               <TouchableOpacity
                 onPress={() => setIsEditingProfile(false)}
-                style={{ marginTop: 10, backgroundColor: 'gray', padding: 10 }}
+                style={{
+                  marginTop: 10,
+                  backgroundColor: 'gray',
+                  borderRadius: 8,
+                  padding: 12,
+                  alignItems: 'center',
+                }}
               >
-                <Text style={{ color: 'white' }}>Cancel</Text>
+                <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+                  Cancel
+                </Text>
               </TouchableOpacity>
             )}
 
             {/* Service Form */}
             {serviceFormMode !== 'none' && (
               <View style={{ marginTop: 20 }}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                <Text style={{ fontSize: 16, fontWeight: '600', color: '#3E4241', marginBottom: 10 }}>
                   {serviceFormMode === 'add' ? 'Add New Service' : 'Edit Service'}
                 </Text>
                 <TextInput
                   value={newService}
                   onChangeText={setNewService}
                   placeholder="Enter service (e.g., Vaccination)"
-                  style={{ borderBottomWidth: 1, padding: 8 }}
+                  placeholderTextColor="#6B7280"
+                  style={{
+                    backgroundColor: '#F9FAFB',
+                    borderWidth: 1,
+                    borderColor: '#D1D5DB',
+                    borderRadius: 8,
+                    padding: 10,
+                    fontSize: 14,
+                    color: '#3E4241',
+                  }}
                 />
                 <View style={{ flexDirection: 'row', marginTop: 10 }}>
                   <TouchableOpacity
                     onPress={serviceFormMode === 'add' ? handleAddService : handleEditService}
                     style={{
                       flex: 1,
-                      backgroundColor: 'green',
-                      padding: 10,
+                      backgroundColor: '#3674B5',
+                      borderRadius: 8,
+                      padding: 12,
                       marginRight: 5,
+                      alignItems: 'center',
                       opacity: isSubmitting ? 0.5 : 1,
                     }}
                     disabled={isSubmitting}
                   >
-                    <Text style={{ color: 'white' }}>{serviceFormMode === 'add' ? 'Save Service' : 'Update Service'}</Text>
+                    <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+                      {serviceFormMode === 'add' ? 'Save Service' : 'Update Service'}
+                    </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={resetServiceForm}
-                    style={{ flex: 1, backgroundColor: 'gray', padding: 10, marginLeft: 5 }}
+                    style={{
+                      flex: 1,
+                      backgroundColor: 'gray',
+                      borderRadius: 8,
+                      padding: 12,
+                      marginLeft: 5,
+                      alignItems: 'center',
+                    }}
                   >
-                    <Text style={{ color: 'white' }}>Cancel</Text>
+                    <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+                      Cancel
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -368,74 +458,126 @@ const VetProfileScreen = () => {
             {serviceFormMode === 'none' && (
               <TouchableOpacity
                 onPress={() => setServiceFormMode('add')}
-                style={{ marginTop: 20, backgroundColor: 'orange', padding: 10 }}
+                style={{
+                  marginTop: 20,
+                  backgroundColor: '#28a745',
+                  borderRadius: 8,
+                  padding: 12,
+                  alignItems: 'center',
+                }}
               >
-                <Text style={{ color: 'white' }}>Add a Service</Text>
+                <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+                  Add a Service
+                </Text>
               </TouchableOpacity>
             )}
 
             {/* Services List */}
             <View style={{ marginTop: 30 }}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Services Offered</Text>
+              <Text style={{ fontSize: 18, fontWeight: '600', color: '#3E4241', marginBottom: 10 }}>
+                Services Offered
+              </Text>
               {vetData.services.length > 0 ? (
                 vetData.services.map((service, index) => (
-                  <View key={index} style={{ marginTop: 10, borderWidth: 1, padding: 10, borderRadius: 5 }}>
-                    <Text>{service}</Text>
+                  <View
+                    key={index}
+                    style={{
+                      backgroundColor: '#FFF',
+                      borderRadius: 12,
+                      padding: 12,
+                      marginVertical: 8,
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.1,
+                      shadowRadius: 4,
+                      elevation: 3,
+                    }}
+                  >
+                    <Text style={{ fontSize: 14, color: '#3E4241' }}>
+                      {service}
+                    </Text>
                     <View style={{ flexDirection: 'row', marginTop: 10 }}>
                       <TouchableOpacity
                         onPress={() => startEditingService(index)}
                         style={{
                           flex: 1,
-                          backgroundColor: 'blue',
-                          padding: 8,
+                          backgroundColor: '#3674B5',
+                          borderRadius: 8,
+                          padding: 10,
                           marginRight: 5,
+                          alignItems: 'center',
                           opacity: isSubmitting ? 0.5 : 1,
                         }}
                         disabled={isSubmitting}
                       >
-                        <Text style={{ color: 'white' }}>Edit</Text>
+                        <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+                          Edit
+                        </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleDeleteService(index)}
                         style={{
                           flex: 1,
                           backgroundColor: 'red',
-                          padding: 8,
+                          borderRadius: 8,
+                          padding: 10,
                           marginLeft: 5,
+                          alignItems: 'center',
                           opacity: isSubmitting ? 0.5 : 1,
                         }}
                         disabled={isSubmitting}
                       >
-                        <Text style={{ color: 'white' }}>Delete</Text>
+                        <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+                          Delete
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   </View>
                 ))
               ) : (
-                <Text>No services added yet</Text>
+                <Text style={{ fontSize: 14, color: '#6B7280' }}>
+                  No services added yet
+                </Text>
               )}
             </View>
 
             {/* Logout Button */}
             <TouchableOpacity
               onPress={handleLogout}
-              style={{ marginTop: 30, backgroundColor: 'red', padding: 10 }}
+              style={{
+                marginTop: 30,
+                marginBottom: 20,
+                backgroundColor: 'red',
+                borderRadius: 8,
+                padding: 12,
+                alignItems: 'center',
+              }}
             >
-              <Text style={{ color: 'white' }}>Logout</Text>
+              <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+                Logout
+              </Text>
             </TouchableOpacity>
           </>
         )}
 
-        <Snackbar
-          visible={snackbarVisible}
-          onDismiss={() => setSnackbarVisible(false)}
-          duration={Snackbar.DURATION_SHORT}
-          style={{
-            backgroundColor: snackbarType === 'success' ? 'green' : 'red',
-          }}
-        >
-          {snackbarMessage}
-        </Snackbar>
+        <View className="absolute bottom-5 left-0 right-0">
+          <Snackbar
+            visible={snackbarVisible}
+            onDismiss={() => setSnackbarVisible(false)}
+            duration={Snackbar.DURATION_SHORT}
+            style={{
+              backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+              borderRadius: 8,
+              padding: 10,
+              marginHorizontal: 10,
+              marginBottom: 10,
+            }}
+          >
+            <Text style={{ color: '#FFF', fontSize: 14 }}>
+              {snackbarMessage}
+            </Text>
+          </Snackbar>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

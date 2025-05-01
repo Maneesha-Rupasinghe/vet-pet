@@ -197,7 +197,7 @@ const RegisterScreen = ({ navigation }: any) => {
 
                     <View className="flex flex-row justify-center mt-[12px] gap-x-2">
                         <Text>Already have an account?</Text>
-                        <Link className="text-[#3674B5]" href={'/screens/LoginScreen'}>Sign in</Link>
+                        <Link className="text-[#3674B5] font-semibold" href={'/screens/LoginScreen'}>Sign in</Link>
                     </View>
 
                     {/* Snackbar for displaying success or error messages */}

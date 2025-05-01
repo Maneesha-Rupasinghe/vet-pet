@@ -163,14 +163,14 @@ const OwnerReminders: React.FC = () => {
     });
 
     return (
-        <View className="flex-1 bg-gray-100 p-5">
-            <Text className="text-2xl font-bold text-gray-800 mb-5">
+        <View className="flex-1 bg-[#FBF8EF] p-5">
+            <Text className="text-3xl font-extrabold text-[#3E4241] mb-5">
                 Appointment Reminders
             </Text>
 
             {/* Upcoming Appointments */}
             <View className="flex-1">
-                <Text className="text-lg font-semibold text-gray-800 mb-2">
+                <Text className="text-xl font-bold text-[#3E4241] mb-3">
                     Upcoming Appointments (Next 7 Days)
                 </Text>
                 {upcomingAppointments.length === 0 ? (
@@ -182,18 +182,18 @@ const OwnerReminders: React.FC = () => {
                         {upcomingAppointments.map((appointment) => (
                             <View
                                 key={appointment.id}
-                                className="mb-4 p-4 bg-white rounded-lg border border-gray-300"
+                                className="mb-4 p-4 bg-white rounded-xl border border-gray-200 shadow-md"
                             >
-                                <Text className="text-lg font-semibold text-gray-800">
+                                <Text className="text-lg font-semibold text-[#3E4241]">
                                     Pet: {appointment.pet}
                                 </Text>
-                                <Text className="text-base text-gray-600">
+                                <Text className="text-base text-gray-600 mt-1">
                                     Date: {appointment.date}
                                 </Text>
-                                <Text className="text-base text-gray-600">
+                                <Text className="text-base text-gray-600 mt-1">
                                     Time: {appointment.time}
                                 </Text>
-                                <Text className="text-base text-gray-600">
+                                <Text className="text-base text-gray-600 mt-1">
                                     Status: {appointment.status}
                                 </Text>
                             </View>
@@ -203,14 +203,21 @@ const OwnerReminders: React.FC = () => {
             </View>
 
             {/* Snackbar */}
-            <Snackbar
-                visible={snackbarVisible}
-                onDismiss={() => setSnackbarVisible(false)}
-                duration={Snackbar.DURATION_SHORT}
-                style={{ backgroundColor: snackbarType === 'success' ? '#16a34a' : '#dc2626' }}
-            >
-                <Text className="text-white">{snackbarMessage}</Text>
-            </Snackbar>
+            <View className="absolute bottom-5 left-0 right-0">
+                <Snackbar
+                    visible={snackbarVisible}
+                    onDismiss={() => setSnackbarVisible(false)}
+                    duration={Snackbar.DURATION_SHORT}
+                    style={{
+                        backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+                        borderRadius: 8,
+                        padding: 10,
+                        marginHorizontal: 10,
+                    }}
+                >
+                    {snackbarMessage}
+                </Snackbar>
+            </View>
         </View>
     );
 };

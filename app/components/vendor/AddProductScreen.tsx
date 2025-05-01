@@ -4,14 +4,14 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { auth } from '../../firebase/firebase';
 import { Snackbar } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system'; // For converting image to Base64
+import * as FileSystem from 'expo-file-system';
 
 interface ProductData {
   name: string;
-  price: string; // Stored as string in form, converted to number for Firestore
-  quantity: string; // Stored as string in form, converted to number for Firestore
+  price: string;
+  quantity: string;
   vendorId: string;
-  imageBase64?: string; // Store Base64 string of the image
+  imageBase64?: string;
 }
 
 const VendorAddProductScreen = () => {
@@ -23,13 +23,12 @@ const VendorAddProductScreen = () => {
     vendorId: auth.currentUser?.uid || '',
   });
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [imageBase64, setImageBase64] = useState<string | null>(null); // Store Base64 string for submission
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackbarType] = useState<'success' | 'error'>('success');
 
-  // Request permission to access the gallery and pick an image
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
@@ -41,13 +40,12 @@ const VendorAddProductScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.3, // Reduce quality to keep Base64 size small
+      quality: 0.3,
     });
 
     if (!result.canceled && result.assets[0].uri) {
       setSelectedImage(result.assets[0].uri);
 
-      // Convert the image to Base64
       try {
         const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, {
           encoding: FileSystem.EncodingType.Base64,
@@ -88,16 +86,14 @@ const VendorAddProductScreen = () => {
     }
 
     try {
-      // Save product to Firestore
       await addDoc(collection(firestore, 'products'), {
         name: productData.name,
         price: Number(productData.price),
         quantity: Number(productData.quantity),
         vendorId: userId,
-        imageBase64: imageBase64 || null, // Save Base64 string or null if no image
+        imageBase64: imageBase64 || null,
       });
 
-      // Reset form
       setProductData({ name: '', price: '', quantity: '', vendorId: userId });
       setSelectedImage(null);
       setImageBase64(null);
@@ -114,58 +110,108 @@ const VendorAddProductScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Add Product</Text>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#FBF8EF' }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView contentContainerStyle={{ padding: 10 }}>
+        <Text className="text-2xl font-extrabold text-[#3E4241] mb-5 ml-5">
+          Product Form 
+        </Text>
 
         {/* Product Name */}
-        <View style={{ marginTop: 20 }}>
-          <Text>Product Name:</Text>
+        <View style={{ marginTop: 15 }}>
+          <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+            Product Name:
+          </Text>
           <TextInput
             value={productData.name}
             onChangeText={(text) => handleChange('name', text)}
             placeholder="Enter product name"
-            style={{ borderBottomWidth: 1, padding: 8 }}
+            placeholderTextColor="#6B7280"
+            style={{
+              backgroundColor: '#F9FAFB',
+              borderWidth: 1,
+              borderColor: '#D1D5DB',
+              borderRadius: 8,
+              padding: 10,
+              fontSize: 14,
+              color: '#3E4241',
+            }}
           />
         </View>
 
         {/* Price */}
-        <View style={{ marginTop: 20 }}>
-          <Text>Price:</Text>
+        <View style={{ marginTop: 15 }}>
+          <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+            Price:
+          </Text>
           <TextInput
             value={productData.price}
             onChangeText={(text) => handleChange('price', text)}
             placeholder="Enter price"
+            placeholderTextColor="#6B7280"
             keyboardType="numeric"
-            style={{ borderBottomWidth: 1, padding: 8 }}
+            style={{
+              backgroundColor: '#F9FAFB',
+              borderWidth: 1,
+              borderColor: '#D1D5DB',
+              borderRadius: 8,
+              padding: 10,
+              fontSize: 14,
+              color: '#3E4241',
+            }}
           />
         </View>
 
         {/* Available Quantity */}
-        <View style={{ marginTop: 20 }}>
-          <Text>Available Quantity:</Text>
+        <View style={{ marginTop: 15 }}>
+          <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+            Available Quantity:
+          </Text>
           <TextInput
             value={productData.quantity}
             onChangeText={(text) => handleChange('quantity', text)}
             placeholder="Enter quantity"
+            placeholderTextColor="#6B7280"
             keyboardType="numeric"
-            style={{ borderBottomWidth: 1, padding: 8 }}
+            style={{
+              backgroundColor: '#F9FAFB',
+              borderWidth: 1,
+              borderColor: '#D1D5DB',
+              borderRadius: 8,
+              padding: 10,
+              fontSize: 14,
+              color: '#3E4241',
+            }}
           />
         </View>
 
         {/* Image Picker */}
-        <View style={{ marginTop: 20 }}>
-          <Text>Product Image (Optional):</Text>
+        <View style={{ marginTop: 15 }}>
+          <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+            Product Image (Optional):
+          </Text>
           <TouchableOpacity
             onPress={pickImage}
-            style={{ marginTop: 10, backgroundColor: 'orange', padding: 10 }}
+            style={{
+              backgroundColor: '#3674B5',
+              borderRadius: 8,
+              padding: 12,
+              alignItems: 'center',
+            }}
           >
-            <Text style={{ color: 'white' }}>Select Image</Text>
+            <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+              Select Image
+            </Text>
           </TouchableOpacity>
           {selectedImage && (
             <Image
               source={{ uri: selectedImage }}
-              style={{ marginTop: 10, width: 200, height: 150, resizeMode: 'contain' }}
+              style={{
+                marginTop: 10,
+                width: '100%',
+                height: 200,
+                resizeMode: 'contain',
+                borderRadius: 8,
+              }}
             />
           )}
         </View>
@@ -175,25 +221,35 @@ const VendorAddProductScreen = () => {
           onPress={handleAddProduct}
           style={{
             marginTop: 20,
-            backgroundColor: 'green',
-            padding: 10,
+            backgroundColor: '#28a745',
+            borderRadius: 8,
+            padding: 12,
+            alignItems: 'center',
             opacity: isSubmitting ? 0.5 : 1,
           }}
           disabled={isSubmitting}
         >
-          <Text style={{ color: 'white' }}>Add Product</Text>
+          <Text style={{ color: '#FFF', fontSize: 14, fontWeight: '500' }}>
+            Add Product
+          </Text>
         </TouchableOpacity>
 
-        <Snackbar
-          visible={snackbarVisible}
-          onDismiss={() => setSnackbarVisible(false)}
-          duration={Snackbar.DURATION_SHORT}
-          style={{
-            backgroundColor: snackbarType === 'success' ? 'green' : 'red',
-          }}
-        >
-          {snackbarMessage}
-        </Snackbar>
+        <View className="absolute bottom-5 left-0 right-0">
+          <Snackbar
+            visible={snackbarVisible}
+            onDismiss={() => setSnackbarVisible(false)}
+            duration={Snackbar.DURATION_SHORT}
+            style={{
+              backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+              borderRadius: 8,
+              padding: 10,
+              marginHorizontal: 10,
+              marginBottom: 10,
+            }}
+          >
+            <Text style={{ color: '#FFF', fontSize: 14 }}>{snackbarMessage}</Text>
+          </Snackbar>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

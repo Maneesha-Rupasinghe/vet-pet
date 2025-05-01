@@ -6,13 +6,13 @@ import { auth } from '@/app/firebase/firebase';
 import * as Notifications from 'expo-notifications';
 
 interface Appointment {
-  id: string; // Firestore document ID
-  from: string; // User ID of the pet owner
-  to: string; // Vet ID (matches current user's UID)
-  date: string; // Appointment date (YYYY-MM-DD)
-  time: string; // Appointment time (HH:MM)
-  pet: string; // Pet name
-  status: 'pending' | 'accepted' | 'rejected'; // Appointment status
+  id: string;
+  from: string;
+  to: string;
+  date: string;
+  time: string;
+  pet: string;
+  status: 'pending' | 'accepted' | 'rejected';
 }
 
 const VetReminders: React.FC = () => {
@@ -118,10 +118,11 @@ const VetReminders: React.FC = () => {
           data: { appointmentId: appointment.id },
         },
         trigger: trigger24Hours,
-        identifier: `${appointment.id}-24hours`, // Unique identifier for this notification
+        identifier: `${appointment.id}-24hours`,
       });
       console.log(`Scheduled 24-hour notification for appointment ${appointment.id} at ${trigger24Hours}`);
     }
+
     // Schedule notification 1 hour before
     const trigger1Hour = new Date(appointmentDate.getTime() - 5 * 60 * 1000);
     if (trigger1Hour > new Date()) {
@@ -137,7 +138,7 @@ const VetReminders: React.FC = () => {
       console.log(`Scheduled 1-hour notification for appointment ${appointment.id} at ${trigger1Hour}`);
     }
 
-    // Schedule notification  5 min 
+    // Schedule notification 5 min 
     const trigger5Min = new Date(appointmentDate.getTime() - 5 * 60 * 1000);
     if (trigger5Min > new Date()) {
       await Notifications.scheduleNotificationAsync({
@@ -147,7 +148,7 @@ const VetReminders: React.FC = () => {
           data: { appointmentId: appointment.id },
         },
         trigger: trigger5Min,
-        identifier: `${appointment.id}-1hour`, // Unique identifier for this notification
+        identifier: `${appointment.id}-1hour`,
       });
       console.log(`Scheduled 1-hour notification for appointment ${appointment.id} at ${trigger5Min}`);
     }
@@ -157,25 +158,25 @@ const VetReminders: React.FC = () => {
   const upcomingAppointments = appointments.filter((appointment) => {
     const [year, month, day] = appointment.date.split('-').map(Number);
     const [hour, minute] = appointment.time.split(':').map(Number);
-    const appointmentDate = new Date(year, month - 1, day, hour, minute); // Include time
+    const appointmentDate = new Date(year, month - 1, day, hour, minute);
     const now = new Date();
     const oneWeekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
     return appointmentDate >= now && appointmentDate <= oneWeekFromNow;
   });
 
   return (
-    <View className="flex-1 bg-gray-100 p-5">
-      <Text className="text-2xl font-bold text-gray-800 mb-5">
-        Appointment Reminders
-      </Text>
+    <View style={{ flex: 1, padding: 10 }} className="bg-[#FBF8EF]">
+            <Text className="text-2xl font-extrabold text-[#3E4241] mb-5">
+                Appointment Reminders
+            </Text>
 
       {/* Upcoming Appointments */}
-      <View className="flex-1">
-        <Text className="text-lg font-semibold text-gray-800 mb-2">
+      <View style={{ flex: 1 }}>
+        <Text style={{ fontSize: 18, fontWeight: '600', color: '#3E4241', marginBottom: 10, marginHorizontal: 8 }}>
           Upcoming Appointments (Next 7 Days)
         </Text>
         {upcomingAppointments.length === 0 ? (
-          <Text className="text-base text-gray-600">
+          <Text style={{ fontSize: 16, color: '#3E4241', marginHorizontal: 8 }}>
             No upcoming accepted appointments.
           </Text>
         ) : (
@@ -183,18 +184,29 @@ const VetReminders: React.FC = () => {
             {upcomingAppointments.map((appointment) => (
               <View
                 key={appointment.id}
-                className="mb-4 p-4 bg-white rounded-lg border border-gray-300"
+                style={{
+                  backgroundColor: '#FFF',
+                  borderRadius: 12,
+                  padding: 12,
+                  marginVertical: 8,
+                  marginHorizontal: 8,
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 4,
+                  elevation: 3,
+                }}
               >
-                <Text className="text-lg font-semibold text-gray-800">
+                <Text style={{ fontSize: 16, fontWeight: '600', color: '#3E4241' }}>
                   Pet: {appointment.pet}
                 </Text>
-                <Text className="text-base text-gray-600">
+                <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 4 }}>
                   Date: {appointment.date}
                 </Text>
-                <Text className="text-base text-gray-600">
+                <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 4 }}>
                   Time: {appointment.time}
                 </Text>
-                <Text className="text-base text-gray-600">
+                <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 4 }}>
                   Status: {appointment.status}
                 </Text>
               </View>
@@ -204,14 +216,22 @@ const VetReminders: React.FC = () => {
       </View>
 
       {/* Snackbar */}
-      <Snackbar
-        visible={snackbarVisible}
-        onDismiss={() => setSnackbarVisible(false)}
-        duration={Snackbar.DURATION_SHORT}
-        style={{ backgroundColor: snackbarType === 'success' ? '#16a34a' : '#dc2626' }}
-      >
-        <Text className="text-white">{snackbarMessage}</Text>
-      </Snackbar>
+      <View className="absolute bottom-5 left-0 right-0">
+        <Snackbar
+          visible={snackbarVisible}
+          onDismiss={() => setSnackbarVisible(false)}
+          duration={Snackbar.DURATION_SHORT}
+          style={{
+            backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+            borderRadius: 8,
+            padding: 10,
+            marginHorizontal: 10,
+            marginBottom: 10,
+          }}
+        >
+          <Text style={{ color: '#FFF', fontSize: 14 }}>{snackbarMessage}</Text>
+        </Snackbar>
+      </View>
     </View>
   );
 };

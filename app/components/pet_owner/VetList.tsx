@@ -132,140 +132,159 @@ const VetList = ({ navigation }: any) => {
         return (
             <TouchableOpacity
                 key={vet.id}
-                className="bg-white rounded-lg p-4 mb-4 shadow-lg items-center"
+                className="bg-white rounded-xl p-5 mb-4 shadow-md items-center border border-gray-200"
                 style={{ width: '100%' }}
             >
                 {/* Image with size constraints and object-contain */}
                 <Image
                     source={defaultImage}
-                    className="w-24 h-24 rounded-full object-contain mb-2"
-                    style={{ width: 96, height: 96 }}
+                    className="w-28 h-28 rounded-full object-cover mb-3 border-2 border-gray-200"
+                    style={{ width: 112, height: 112 }}
                 />
-                <Text className="text-lg font-semibold">{vet.name}</Text>
-                <Text>{vet.contact}</Text>
-                <Text>{vet.location}</Text>
+                <Text className="text-xl font-bold text-[#3E4241] mb-1">{vet.name}</Text>
+                <Text className="text-base text-gray-600">{vet.contact}</Text>
+                <Text className="text-base text-gray-600">{vet.location}</Text>
 
                 {/* See More button */}
                 <TouchableOpacity
-                    className="mt-2 py-2 px-4 bg-blue-500 rounded-full"
+                    className="mt-3 py-2 px-5 bg-[#3674B5] rounded-full shadow-sm"
                     onPress={() => handleSeeMore(vet)}
                 >
-                    <Text className="text-white text-sm">{expandedVet && expandedVet.id === vet.id ? 'Show Less' : 'See More'}</Text>
+                    <Text className="text-white text-base font-semibold">
+                        {expandedVet && expandedVet.id === vet.id ? 'Show Less' : 'See More'}
+                    </Text>
                 </TouchableOpacity>
 
                 {/* Conditionally show additional details when "See More" is clicked */}
                 {expandedVet && expandedVet.id === vet.id && (
-                    <View className="mt-2">
-                        <Text className="text-sm">
-                            Services: {vet.services && vet.services.length > 0 ? vet.services.join(', ') : 'No services listed'}
+                    <View className="mt-3 w-full">
+                        <Text className="text-base text-gray-700">
+                            <Text className="font-semibold">Services: </Text>
+                            {vet.services && vet.services.length > 0 ? vet.services.join(', ') : 'No services listed'}
                         </Text>
-                        <Text className="text-sm">Operating Hours: {vet.workingHours || 'Not available'}</Text>
-                        <Text className="text-sm">Contact No: {vet.contactNo || 'Not available'}</Text>
-                        <Text className="text-sm">Registration No: {vet.vetRegNo || 'Not available'}</Text>
+                        <Text className="text-base text-gray-700 mt-1">
+                            <Text className="font-semibold">Operating Hours: </Text>
+                            {vet.workingHours || 'Not available'}
+                        </Text>
+                        <Text className="text-base text-gray-700 mt-1">
+                            <Text className="font-semibold">Contact No: </Text>
+                            {vet.contactNo || 'Not available'}
+                        </Text>
+                        <Text className="text-base text-gray-700 mt-1">
+                            <Text className="font-semibold">Registration No: </Text>
+                            {vet.vetRegNo || 'Not available'}
+                        </Text>
                     </View>
                 )}
 
                 {/* Continue Button */}
                 <TouchableOpacity
-                    className="mt-2 py-2 px-4 bg-green-500 rounded-full"
+                    className="mt-4 py-2 px-5 bg-[#28a745] rounded-full shadow-sm"
                     onPress={() => handleContinue(vet)}
                 >
-                    <Text className="text-white text-sm">Continue</Text>
+                    <Text className="text-white text-base font-semibold">Continue</Text>
                 </TouchableOpacity>
             </TouchableOpacity>
         );
     };
 
     return (
-        <ScrollView contentContainerStyle={{ padding: 20 }}>
-            {/* Previous Appointments Section */}
-            <View className="mb-5">
-                <TouchableOpacity
-                    onPress={() => setIsExpanded(!isExpanded)}
-                    className="flex-row justify-between items-center bg-blue-500 p-3 rounded-lg"
-                >
-                    <Text className="text-white text-lg font-semibold">
-                        Previous Appointments
-                    </Text>
-                    <Icon
-                        name={isExpanded ? 'chevron-up' : 'chevron-down'}
-                        size={24}
-                        color="white"
-                    />
-                </TouchableOpacity>
+        <>
+            <ScrollView contentContainerStyle={{ padding: 20 }} style={{ backgroundColor: '#FBF8EF' }}>
+                {/* Previous Appointments Section */}
+                <View className="mb-6">
+                    <TouchableOpacity
+                        onPress={() => setIsExpanded(!isExpanded)}
+                        className="flex-row justify-between items-center bg-[#3674B5] p-4 rounded-xl shadow-md"
+                    >
+                        <Text className="text-white text-xl font-bold">
+                            Previous Appointments
+                        </Text>
+                        <Icon
+                            name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                            size={24}
+                            color="white"
+                        />
+                    </TouchableOpacity>
 
-                {isExpanded && (
-                    <View className="mt-2">
-                        {previousAppointments.length === 0 ? (
-                            <Text className="text-base text-gray-600">
-                                No previous appointments found.
-                            </Text>
-                        ) : (
-                            <ScrollView
-                                nestedScrollEnabled={true}
-                                className="max-h-40 border border-gray-300 rounded-lg"
-                                contentContainerStyle={{ paddingVertical: 5 }}
-                            >
-                                {previousAppointments.map((appointment) => (
-                                    <View
-                                        key={appointment.id}
-                                        className="flex-row justify-between items-center mb-2 mx-3 p-3 bg-white rounded-lg border border-gray-200"
-                                    >
-                                        <View>
-                                            <Text className="text-base font-semibold text-gray-800">
-                                                Pet: {appointment.pet}
-                                            </Text>
-                                            <Text className="text-sm text-gray-600">
-                                                Date: {appointment.date}
-                                            </Text>
-                                            <Text className="text-sm text-gray-600">
-                                                Time: {appointment.time}
-                                            </Text>
-                                            <Text className="text-sm text-gray-600">
-                                                Status: {appointment.status}
-                                            </Text>
-                                        </View>
-                                        <TouchableOpacity
-                                            onPress={() => handleDeleteAppointment(appointment.id)}
-                                            className="bg-red-500 rounded-lg p-2"
-                                            disabled={appointment.status === 'deleted'} // Disable if already deleted
+                    {isExpanded && (
+                        <View className="mt-3 bg-white rounded-xl p-4 shadow-md border border-gray-200">
+                            {previousAppointments.length === 0 ? (
+                                <Text className="text-base text-gray-600">
+                                    No previous appointments found.
+                                </Text>
+                            ) : (
+                                <ScrollView
+                                    nestedScrollEnabled={true}
+                                    className="max-h-48"
+                                    contentContainerStyle={{ paddingVertical: 5 }}
+                                >
+                                    {previousAppointments.map((appointment) => (
+                                        <View
+                                            key={appointment.id}
+                                            className="flex-row justify-between items-center mb-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
                                         >
-                                            <Text className="text-white text-sm">
-                                                {appointment.status === 'deleted' ? 'Deleted' : 'Delete'}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                ))}
-                            </ScrollView>
-                        )}
-                    </View>
-                )}
-            </View>
+                                            <View>
+                                                <Text className="text-base font-semibold text-[#3E4241]">
+                                                    Pet: {appointment.pet}
+                                                </Text>
+                                                <Text className="text-sm text-gray-600 mt-1">
+                                                    Date: {appointment.date}
+                                                </Text>
+                                                <Text className="text-sm text-gray-600 mt-1">
+                                                    Time: {appointment.time}
+                                                </Text>
+                                                <Text className="text-sm text-gray-600 mt-1">
+                                                    Status: {appointment.status}
+                                                </Text>
+                                            </View>
+                                            <TouchableOpacity
+                                                onPress={() => handleDeleteAppointment(appointment.id)}
+                                                className={`py-2 px-4 rounded-lg shadow-sm ${appointment.status === 'deleted' ? 'bg-gray-400' : 'bg-[#ff4444]'}`}
+                                                disabled={appointment.status === 'deleted'}
+                                            >
+                                                <Text className="text-white text-sm font-semibold">
+                                                    {appointment.status === 'deleted' ? 'Deleted' : 'Delete'}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    ))}
+                                </ScrollView>
+                            )}
+                        </View>
+                    )}
+                </View>
 
-            {/* Existing Vet List Content */}
-            <Text className="text-2xl font-bold">List of Vets</Text>
+                {/* Existing Vet List Content */}
+                <Text className="text-3xl font-extrabold text-[#3E4241] mb-5">List of Vets</Text>
 
-            {/* Scrollable vet cards */}
-            <View className="mt-4">
-                {vets.length > 0 ? (
-                    vets.map((vet) => renderVetCard(vet))
-                ) : (
-                    <Text>No vets found</Text>
-                )}
-            </View>
+                {/* Scrollable vet cards */}
+                <View className="mt-2">
+                    {vets.length > 0 ? (
+                        vets.map((vet) => renderVetCard(vet))
+                    ) : (
+                        <Text className="text-base text-gray-600">No vets found</Text>
+                    )}
+                </View>
 
-            {/* Snackbar for displaying success or error messages */}
-            <Snackbar
-                visible={snackbarVisible}
-                onDismiss={() => setSnackbarVisible(false)}
-                duration={Snackbar.DURATION_SHORT}
-                style={{
-                    backgroundColor: snackbarType === 'success' ? 'green' : 'red',
-                }}
-            >
-                {snackbarMessage}
-            </Snackbar>
-        </ScrollView>
+                {/* Snackbar for displaying success or error messages */}
+                <View className="absolute bottom-5 left-0 right-0">
+                    <Snackbar
+                        visible={snackbarVisible}
+                        onDismiss={() => setSnackbarVisible(false)}
+                        duration={Snackbar.DURATION_SHORT}
+                        style={{
+                            backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+                            borderRadius: 8,
+                            padding: 10,
+                            marginHorizontal: 10,
+                        }}
+                    >
+                        {snackbarMessage}
+                    </Snackbar>
+                </View>
+            </ScrollView>
+        </>
     );
 };
 

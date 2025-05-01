@@ -6,13 +6,13 @@ import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc } fr
 import { auth } from '@/app/firebase/firebase';
 
 interface Appointment {
-    id: string; // Firestore document ID
-    from: string; // User ID of the pet owner
-    to: string; // Vet ID (matches current user's UID)
-    date: string; // Appointment date (YYYY-MM-DD)
-    time: string; // Appointment time (HH:MM)
-    pet: string; // Pet name
-    status: 'pending' | 'accepted' | 'rejected'; // Appointment status
+    id: string;
+    from: string;
+    to: string;
+    date: string;
+    time: string;
+    pet: string;
+    status: 'pending' | 'accepted' | 'rejected';
 }
 
 const VetAppointments: React.FC = () => {
@@ -20,6 +20,8 @@ const VetAppointments: React.FC = () => {
     const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
     const [snackbarMessage, setSnackbarMessage] = useState<string>('');
     const [snackbarType, setSnackbarType] = useState<'success' | 'error'>('success');
+    const [hasFetchedData, setHasFetchedData] = useState<boolean>(false);
+    const [errorTimeout, setErrorTimeout] = useState<NodeJS.Timeout | null>(null);
 
     const firestore = getFirestore();
     const vetId = auth.currentUser?.uid;
@@ -36,22 +38,43 @@ const VetAppointments: React.FC = () => {
         const appointmentsQuery = query(
             collection(firestore, 'appointments'),
             where('to', '==', vetId),
-            where('status','!=','deleted')
+            where('status', 'in', ['pending', 'accepted', 'rejected']) // Replaced != 'deleted' with 'in' for better compatibility
         );
 
-        const unsubscribe = onSnapshot(appointmentsQuery, (snapshot) => {
-            const fetchedAppointments: Appointment[] = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            })) as Appointment[];
-            setAppointments(fetchedAppointments);
-        }, (error) => {
-            setSnackbarMessage('Failed to fetch appointments.');
-            setSnackbarType('error');
-            setSnackbarVisible(true);
-        });
+        const unsubscribe = onSnapshot(
+            appointmentsQuery,
+            (snapshot) => {
+                const fetchedAppointments: Appointment[] = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                })) as Appointment[];
+                setAppointments(fetchedAppointments);
+                setHasFetchedData(true); // Mark that data has been successfully fetched
 
-        return () => unsubscribe();
+                // Clear any pending error timeout since we successfully fetched data
+                if (errorTimeout) {
+                    clearTimeout(errorTimeout);
+                    setErrorTimeout(null);
+                }
+            },
+            (error) => {
+                console.error('Firestore onSnapshot error:', error.message); // Log the error for debugging
+                // Only show the error if data hasn't been fetched after 5 seconds
+                const timeout = setTimeout(() => {
+                    if (!hasFetchedData) {
+                        setSnackbarMessage('Failed to fetch appointments.');
+                        setSnackbarType('error');
+                        setSnackbarVisible(true);
+                    }
+                }, 5000);
+                setErrorTimeout(timeout);
+            }
+        );
+
+        return () => {
+            unsubscribe();
+            if (errorTimeout) clearTimeout(errorTimeout);
+        };
     }, [vetId]);
 
     // Update appointment status
@@ -71,37 +94,57 @@ const VetAppointments: React.FC = () => {
     };
 
     return (
-        <View className="flex-1 bg-gray-100 p-5">
-            <Text className="text-2xl font-bold text-gray-800 mb-5">
-                My Appointments
+        <View style={{ flex: 1, padding: 10 }} className="bg-[#FBF8EF]">
+            <Text className="text-2xl font-extrabold text-[#3E4241] mb-5">
+                My Appointment
             </Text>
 
             {appointments.length === 0 ? (
-                <Text className="text-lg text-gray-600">No appointments found.</Text>
+                <Text style={{ fontSize: 16, color: '#3E4241', marginHorizontal: 8 }}>
+                    No appointments found.
+                </Text>
             ) : (
                 <ScrollView>
                     {appointments.map((appointment) => (
                         <View
                             key={appointment.id}
-                            className="mb-4 p-4 bg-white rounded-lg border border-gray-300"
+                            style={{
+                                backgroundColor: '#FFF',
+                                borderRadius: 12,
+                                padding: 12,
+                                marginVertical: 8,
+                                marginHorizontal: 8,
+                                shadowColor: '#000',
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowOpacity: 0.1,
+                                shadowRadius: 4,
+                                elevation: 3,
+                            }}
                         >
-                            <Text className="text-lg font-semibold text-gray-800">
+                            <Text style={{ fontSize: 16, fontWeight: '600', color: '#3E4241' }}>
                                 Pet: {appointment.pet}
                             </Text>
-                            <Text className="text-base text-gray-600">
+                            <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 4 }}>
                                 Date: {appointment.date}
                             </Text>
-                            <Text className="text-base text-gray-600">
+                            <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 4 }}>
                                 Time: {appointment.time}
                             </Text>
-                            <Text className="text-base text-gray-600">
+                            <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 4 }}>
                                 Status: {appointment.status}
                             </Text>
 
                             {/* Status Picker */}
-                            <View className="mt-2">
-                                <Text className="text-base text-gray-600 mb-1">Change Status</Text>
-                                <View className="border border-gray-300 rounded-lg bg-white">
+                            <View style={{ marginTop: 10 }}>
+                                <Text style={{ fontSize: 14, fontWeight: '500', color: '#3E4241', marginBottom: 5 }}>
+                                    Change Status
+                                </Text>
+                                <View style={{
+                                    borderWidth: 1,
+                                    borderColor: '#D1D5DB',
+                                    borderRadius: 8,
+                                    backgroundColor: '#F9FAFB',
+                                }}>
                                     <Picker
                                         selectedValue={appointment.status}
                                         onValueChange={(itemValue) =>
@@ -121,14 +164,22 @@ const VetAppointments: React.FC = () => {
             )}
 
             {/* Snackbar */}
-            <Snackbar
-                visible={snackbarVisible}
-                onDismiss={() => setSnackbarVisible(false)}
-                duration={Snackbar.DURATION_SHORT}
-                style={{ backgroundColor: snackbarType === 'success' ? '#16a34a' : '#dc2626' }}
-            >
-                <Text className="text-white">{snackbarMessage}</Text>
-            </Snackbar>
+            <View className="absolute bottom-5 left-0 right-0">
+                <Snackbar
+                    visible={snackbarVisible}
+                    onDismiss={() => setSnackbarVisible(false)}
+                    duration={Snackbar.DURATION_SHORT}
+                    style={{
+                        backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+                        borderRadius: 8,
+                        padding: 10,
+                        marginHorizontal: 10,
+                        marginBottom: 10,
+                    }}
+                >
+                    <Text style={{ color: '#FFF', fontSize: 14 }}>{snackbarMessage}</Text>
+                </Snackbar>
+            </View>
         </View>
     );
 };
