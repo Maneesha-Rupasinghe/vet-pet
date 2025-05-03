@@ -26,7 +26,6 @@ const VetAppointments: React.FC = () => {
     const firestore = getFirestore();
     const vetId = auth.currentUser?.uid;
 
-    // Fetch appointments where 'to' matches vet's UID
     useEffect(() => {
         if (!vetId) {
             setSnackbarMessage('User not authenticated.');
@@ -38,7 +37,7 @@ const VetAppointments: React.FC = () => {
         const appointmentsQuery = query(
             collection(firestore, 'appointments'),
             where('to', '==', vetId),
-            where('status', 'in', ['pending', 'accepted', 'rejected']) // Replaced != 'deleted' with 'in' for better compatibility
+            where('status', 'in', ['pending', 'accepted', 'rejected']) 
         );
 
         const unsubscribe = onSnapshot(
@@ -49,17 +48,17 @@ const VetAppointments: React.FC = () => {
                     ...doc.data(),
                 })) as Appointment[];
                 setAppointments(fetchedAppointments);
-                setHasFetchedData(true); // Mark that data has been successfully fetched
+                setHasFetchedData(true); 
 
-                // Clear any pending error timeout since we successfully fetched data
+         
                 if (errorTimeout) {
                     clearTimeout(errorTimeout);
                     setErrorTimeout(null);
                 }
             },
             (error) => {
-                console.error('Firestore onSnapshot error:', error.message); // Log the error for debugging
-                // Only show the error if data hasn't been fetched after 5 seconds
+                console.error('Firestore onSnapshot error:', error.message); 
+             
                 const timeout = setTimeout(() => {
                     if (!hasFetchedData) {
                         setSnackbarMessage('Failed to fetch appointments.');
@@ -77,7 +76,7 @@ const VetAppointments: React.FC = () => {
         };
     }, [vetId]);
 
-    // Update appointment status
+
     const handleStatusChange = async (appointmentId: string, newStatus: string) => {
         try {
             const appointmentRef = doc(firestore, 'appointments', appointmentId);

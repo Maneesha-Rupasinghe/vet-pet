@@ -35,22 +35,22 @@ const VetHome = () => {
         tabBarIconStyle: {
           marginTop: 5,
         },
-        // Add header styles for all tab screens
+     
         headerStyle: {
-          backgroundColor: '#FBF8EF', // Match app background
-          elevation: 0, // Remove shadow for Android
-          shadowOpacity: 0, // Remove shadow for iOS
-          borderBottomWidth: 0, // Remove bottom border
+          backgroundColor: '#FBF8EF',
+          elevation: 0, 
+          shadowOpacity: 0, 
+          borderBottomWidth: 0, 
         },
         headerTitleStyle: {
-          fontSize: 32, // Larger font size for a bold look
+          fontSize: 32, 
           fontWeight: 'bold',
-          color: '#3E4241', // Match app text color
-          textTransform: 'uppercase', // Uppercase for emphasis
+          color: '#3E4241', 
+          textTransform: 'uppercase', 
         },
         headerTitleContainerStyle: {
-          paddingHorizontal: 16, // Add padding for better alignment
-          paddingTop: 10, // Add top padding for spacing
+          paddingHorizontal: 16, 
+          paddingTop: 10, 
         },
       }}
     >
@@ -66,7 +66,7 @@ const VetHome = () => {
           headerTitleStyle: {
             fontSize: 28,
             fontWeight: 'bold',
-            color: '#black', // Match the color used in OwnerHome
+            color: '#black', 
             textTransform: 'uppercase',
             letterSpacing: 2,
           },

@@ -31,7 +31,7 @@ const VetCalendar: React.FC = () => {
   const firestore = getFirestore();
   const vetId = auth.currentUser?.uid;
 
-  // Check if Calendar is available
+
   useEffect(() => {
     try {
       require('react-native-calendars');
@@ -43,7 +43,6 @@ const VetCalendar: React.FC = () => {
     }
   }, []);
 
-  // Fetch accepted appointments where 'to' matches vet's UID
   useEffect(() => {
     if (!vetId) {
       setSnackbarMessage('User not authenticated.');
@@ -76,7 +75,7 @@ const VetCalendar: React.FC = () => {
       fetchedAppointments.forEach((appointment) => {
         newMarkedDates[appointment.date] = {
           marked: true,
-          dotColor: '#28a745', // Green dot for accepted appointments
+          dotColor: '#28a745', 
         };
       });
       setMarkedDates(newMarkedDates);

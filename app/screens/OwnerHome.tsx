@@ -40,22 +40,22 @@ const OwnerTabNavigator = () => {
         tabBarIconStyle: {
           marginTop: 5,
         },
-        // Add header styles for all tab screens
+       
         headerStyle: {
-          backgroundColor: '#FBF8EF', // Match app background
-          elevation: 0, // Remove shadow for Android
-          shadowOpacity: 0, // Remove shadow for iOS
-          borderBottomWidth: 0, // Remove bottom border
+          backgroundColor: '#FBF8EF', 
+          elevation: 0, 
+          shadowOpacity: 0, 
+          borderBottomWidth: 0,
         },
         headerTitleStyle: {
-          fontSize: 32, // Larger font size for a bold look
+          fontSize: 32, 
           fontWeight: 'bold',
-          color: '#3E4241', // Match app text color
-          textTransform: 'uppercase', // Uppercase for emphasis
+          color: '#3E4241', 
+          textTransform: 'uppercase', 
         },
         headerTitleContainerStyle: {
-          paddingHorizontal: 16, // Add padding for better alignment
-          paddingTop: 10, // Add top padding for spacing
+          paddingHorizontal: 16, 
+          paddingTop: 10, 
         },
       }}
     >
@@ -67,13 +67,13 @@ const OwnerTabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" size={size + 4} color={color} />
           ),
-          headerTitle: 'Shop Now 🛒👇', // Ensure the title is "Shop"
+          headerTitle: 'Shop Now 🛒👇', 
           headerTitleStyle: {
             fontSize: 28,
             fontWeight: 'bold',
-            color: '#black', // Use the app's primary blue for the Shop header
+            color: '#black', 
             textTransform: 'uppercase',
-            letterSpacing: 2, // Add letter spacing for a modern look
+            letterSpacing: 2, 
 
           },
         }}
@@ -86,11 +86,11 @@ const OwnerTabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Icon name="user" size={size + 4} color={color} />
           ),
-          headerTitle: 'Appointments 🧑‍⚕️', // Ensure the title is "Shop"
+          headerTitle: 'Appointments 🧑‍⚕️', 
           headerTitleStyle: {
             fontSize: 28,
             fontWeight: 'bold',
-            color: '#black', // Use the app's primary blue for the Shop header
+            color: '#black', 
             textTransform: 'uppercase',
             letterSpacing: 2,
           },
@@ -104,11 +104,11 @@ const OwnerTabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Icon name="bell" size={size + 4} color={color} />
           ),
-          headerTitle: 'Reminders ⏰', // Ensure the title is "Shop"
+          headerTitle: 'Reminders ⏰', 
           headerTitleStyle: {
             fontSize: 28,
             fontWeight: 'bold',
-            color: '#black', // Use the app's primary blue for the Shop header
+            color: '#black', 
             textTransform: 'uppercase',
             letterSpacing: 2,
           },
@@ -123,11 +123,11 @@ const OwnerTabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Icon name="user" size={size + 4} color={color} />
           ),
-          headerTitle: 'Profile 🐈', // Ensure the title is "Shop"
+          headerTitle: 'Profile 🐈',
           headerTitleStyle: {
             fontSize: 28,
             fontWeight: 'bold',
-            color: '#black', // Use the app's primary blue for the Shop header
+            color: '#black', 
             textTransform: 'uppercase',
             letterSpacing: 2,
           },
@@ -137,7 +137,7 @@ const OwnerTabNavigator = () => {
   );
 };
 
-// Stack Navigator to include the Tab Navigator and AppointmentRequest
+
 const OwnerHome = () => {
   return (
     <Stack.Navigator>

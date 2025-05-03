@@ -5,7 +5,7 @@ import { Snackbar } from 'react-native-paper';
 import { auth } from '@/app/firebase/firebase';
 import Icon from 'react-native-vector-icons/Feather';
 
-const defaultImage = require('../../../assets/images/login.jpg'); // Placeholder image
+const defaultImage = require('../../../assets/images/login.jpg'); 
 
 interface Appointment {
     id: string;

@@ -134,12 +134,12 @@ const AppointmentRequest: React.FC = () => {
   };
 
   const onDateChange = (event: any, selectedDate?: Date) => {
-    setShowDatePicker(false); // Android dismisses picker on selection
+    setShowDatePicker(false); 
     if (selectedDate) setAppointmentDate(selectedDate);
   };
 
   const onTimeChange = (event: any, selectedTime?: Date) => {
-    setShowTimePicker(false); // Android dismisses picker on selection
+    setShowTimePicker(false); 
     if (selectedTime) setAppointmentTime(selectedTime);
   };
 

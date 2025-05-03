@@ -6,13 +6,13 @@ import { auth } from '@/app/firebase/firebase';
 import * as Notifications from 'expo-notifications';
 
 interface Appointment {
-    id: string; // Firestore document ID
-    from: string; // User ID of the pet owner
-    to: string; // Vet ID
-    date: string; // Appointment date (YYYY-MM-DD)
-    time: string; // Appointment time (HH:MM)
-    pet: string; // Pet name
-    status: 'pending' | 'accepted' | 'rejected'; // Appointment status
+    id: string; 
+    from: string;
+    to: string; 
+    date: string; 
+    time: string; 
+    pet: string;
+    status: 'pending' | 'accepted' | 'rejected';
 }
 
 const OwnerReminders: React.FC = () => {
@@ -24,7 +24,7 @@ const OwnerReminders: React.FC = () => {
     const firestore = getFirestore();
     const ownerId = auth.currentUser?.uid;
 
-    // Request notification permissions and set up handler
+
     useEffect(() => {
         const requestPermissions = async () => {
             const { status } = await Notifications.requestPermissionsAsync();
@@ -44,7 +44,7 @@ const OwnerReminders: React.FC = () => {
                 });
             }
 
-            // Set up notification handler
+       
             Notifications.setNotificationHandler({
                 handleNotification: async () => ({
                     shouldShowAlert: true,
@@ -57,7 +57,7 @@ const OwnerReminders: React.FC = () => {
         requestPermissions();
     }, []);
 
-    // Fetch accepted appointments and schedule notifications
+
     useEffect(() => {
         if (!ownerId) {
             setSnackbarMessage('User not authenticated.');
@@ -85,7 +85,7 @@ const OwnerReminders: React.FC = () => {
             console.log('Fetched appointments for owner:', fetchedAppointments); // Debug log
             setAppointments(fetchedAppointments);
 
-            // Schedule notifications for upcoming appointments
+           
             fetchedAppointments.forEach((appointment) => {
                 scheduleNotification(appointment);
             });
@@ -98,7 +98,6 @@ const OwnerReminders: React.FC = () => {
         return () => unsubscribe();
     }, [ownerId]);
 
-    // Schedule a notification for an appointment
     const scheduleNotification = async (appointment: Appointment) => {
         await Notifications.cancelScheduledNotificationAsync(`${appointment.id}-24hours`);
         await Notifications.cancelScheduledNotificationAsync(`${appointment.id}-1hour`);

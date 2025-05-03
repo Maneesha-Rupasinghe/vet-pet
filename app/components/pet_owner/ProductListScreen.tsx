@@ -496,7 +496,7 @@ const ProductListScreen = () => {
                 keyExtractor={item => item.id}
                 numColumns={2}
                 nestedScrollEnabled={true}
-                scrollEnabled={false} // Disable FlatList scrolling since ScrollView handles it
+                scrollEnabled={false} 
               />
             )}
 
